@@ -60,6 +60,8 @@ app.post('/api/auth/login', async (req, res) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
 
+    if (!user.password) return res.status(400).json({ error: 'Please login using Google' });
+
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(400).json({ error: 'Invalid credentials' });
 
