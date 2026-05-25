@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  password      String?
+  name          String
+  savedColleges SavedCollege[]
+  reviews       Review[]
+  discussions   Discussion[]
+  answers       Answer[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model College {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  location            String
+  state               String
+  yearEstablished     Int?
+  type                String?
+  mode                String?
+  course              String?
+  durationYears       Int?
+  feesPerYear         Float?
+  entranceExam        String?
+  cutoffRank          Int?
+  averagePlacementPct Float?
+  highestPackageLpa   Float?
+  averagePackageLpa   Float?
+  livingCostPerMonth  Float?
+  hostelAvailability  Boolean?
+  studentFacultyRatio Int?
+  ranking             Int?
+  latitude            Float?
+  longitude           Float?
+  source              String?
+  
+  savedByUsers        SavedCollege[]
+  reviews             Review[]
+  discussions         Discussion[]
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model SavedCollege {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  collegeId Int
+  college   College  @relation(fields: [collegeId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, collegeId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  collegeId Int
+  college   College  @relation(fields: [collegeId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Discussion {
+  id        String   @id @default(uuid())
+  question  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  collegeId Int
+  college   College  @relation(fields: [collegeId], references: [id])
+  answers   Answer[]
+  createdAt DateTime @default(now())
+}
+
+model Answer {
+  id           String     @id @default(uuid())
+  content      String
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  createdAt    DateTime   @default(now())
+}
