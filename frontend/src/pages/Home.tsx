@@ -27,6 +27,7 @@ interface College {
   averagePlacementPct: number | null;
   latitude: number | null;
   longitude: number | null;
+  course?: string;
 }
 
 export default function Home() {
@@ -74,7 +75,7 @@ export default function Home() {
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+    show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } }
   };
 
   return (
