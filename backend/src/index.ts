@@ -172,7 +172,7 @@ app.get('/api/users/saved', authenticateToken, async (req: any, res) => {
       where: { userId: req.user.id },
       include: { college: true }
     });
-    res.json(saved.map(s => s.college));
+    res.json(saved.map((s: any) => s.college));
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch saved colleges' });
   }
