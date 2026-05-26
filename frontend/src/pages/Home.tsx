@@ -32,6 +32,7 @@ interface College {
 
 export default function Home() {
   const [colleges, setColleges] = useState<College[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
   const [course, setCourse] = useState('');
@@ -51,6 +52,7 @@ export default function Home() {
   }, []);
 
   const fetchColleges = async () => {
+    setLoading(true);
     try {
       const res = await axios.get('/api/colleges', {
         params: { search, location, maxFees, course }
@@ -58,6 +60,8 @@ export default function Home() {
       setColleges(res.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -204,7 +208,23 @@ export default function Home() {
         </div>
 
         {/* 🏢 Content Area */}
-        {viewMode === 'grid' ? (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <div key={n} className="h-[400px] bg-white/50 dark:bg-slate-900/50 rounded-3xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden shadow-sm animate-pulse flex flex-col">
+                <div className="h-48 bg-slate-200 dark:bg-slate-800"></div>
+                <div className="p-6 flex-1 space-y-4">
+                  <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded-lg w-3/4"></div>
+                  <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-1/2"></div>
+                  <div className="mt-auto grid grid-cols-2 gap-4">
+                    <div className="h-16 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                    <div className="h-16 bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : viewMode === 'grid' ? (
           <motion.div 
             variants={containerVariants}
             initial="hidden"
