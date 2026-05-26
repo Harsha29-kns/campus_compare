@@ -15,6 +15,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Root route for cron jobs / uptime monitoring
+app.get('/', (req, res) => {
+  res.status(200).send('Server is up and running!');
+});
+
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
