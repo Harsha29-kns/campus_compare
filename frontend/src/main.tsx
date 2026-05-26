@@ -9,7 +9,7 @@ import axios from 'axios'
 // Set the base URL for production deployments (e.g., Render)
 // In development, this stays empty and uses the Vite proxy
 axios.defaults.baseURL = import.meta.env.PROD
-  ? 'https://your-backend-url.onrender.com' // TODO: Replace this with your actual deployed backend URL!
+  ? 'https://campus-compare-8wei.onrender.com' // TODO: Replace this with your actual deployed backend URL!
   : '';
 
 // Ensure cookies (like the session ID) are sent with every request, even cross-origin
